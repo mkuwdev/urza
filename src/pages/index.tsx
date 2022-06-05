@@ -4,7 +4,7 @@ import { generateMerkleProof, Semaphore } from "@zk-kit/protocols"
 import { providers } from "ethers"
 import Head from "next/head"
 import React from "react"
-import styles from "../styles/Home.module.css"
+import styles from "../../styles/Home.module.css"
 
 export default function Home() {
     const [logs, setLogs] = React.useState("Connect your wallet and greet!")

@@ -20,7 +20,7 @@
         "typeRoots": ["node_modules/@types", "types"],
         "incremental": true
     },
-    "include": ["next-env.d.ts", "./pages/**/*.ts", "./pages/**/*.tsx", "./test", "./tasks"],
+    "include": ["next-env.d.ts", "src/pages/**/*.ts", "src/pages/**/*.tsx", "./test", "./tasks"],
     "files": ["./hardhat.config.ts"],
     "exclude": ["node_modules"],
     "ts-node": {
