@@ -20,6 +20,14 @@ const config: HardhatUserConfig = {
         ropsten: {
             url: process.env.ROPSTEN_URL || "",
             accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : []
+        },
+        harmony: {
+            url: `${process.env.HARMONY_MAINNET_URL}`,
+            accounts: [`0x${process.env.PRIVATE_KEY}`]
+        },
+        harmony_testnet: {
+            url: `${process.env.HARMONY_TESTNET_URL}`,
+            accounts: [`0x${process.env.PRIVATE_KEY}`]
         }
     },
     gasReporter: {
