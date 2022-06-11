@@ -59,7 +59,7 @@ contract Urza is SemaphoreCore, SemaphoreGroups, Ownable {
     // type of a single message in a group
     struct Message {
         bytes32 messageId;
-        bytes32 contentId;
+        // bytes32 contentId;
         // .. add time, likes here?
     }
 
@@ -175,17 +175,16 @@ contract Urza is SemaphoreCore, SemaphoreGroups, Ownable {
         _verifyProof(_signal, _root, _nullifierHash, _externalNullifier, _proof, verifier);
         _saveNullifierHash(_nullifierHash);
 
-        bytes32 _contentId = keccak256(abi.encodePacked(_groupId, _contentUri));
-        contentRegistry[_contentId] = _contentUri;
+        bytes32 _contentId = keccak256(abi.encodePacked(_groupId, _messageContentUri));
+        contentRegistry[_contentId] = _messageContentUri;
         groupRegistry[_groupId].messageList.push(
             Message({
-                messageId: _contentId,
-                contentId: _messageContentUri
-            });
+                messageId: _contentId
+            })
         );
 
-        emit ContentAdded(_contentId, _contentUri);
-        emit MessageSent(_signal, _groupid, _contentId);
+        emit ContentAdded(_contentId, _messageContentUri);
+        emit MessageSent(_signal, _groupId, _contentId);
     }
 
     // TODO MAKE GET FUINCTIONS
