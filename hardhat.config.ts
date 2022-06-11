@@ -13,8 +13,11 @@ dotenv.config()
 
 const config: HardhatUserConfig = {
     solidity: "0.8.4",
+    // dependencyCompiler: {
+    //     paths: ["@semaphore-protocol/contracts/verifiers/Verifier20.sol"]
+    // },
     dependencyCompiler: {
-        paths: ["@semaphore-protocol/contracts/verifiers/Verifier20.sol"]
+        paths: ["@appliedzkp/semaphore-contracts/base/Verifier.sol"]
     },
     networks: {
         ropsten: {

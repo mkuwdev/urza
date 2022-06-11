@@ -2,6 +2,14 @@
 # yarn lockfile v1
 
 
+"@appliedzkp/semaphore-contracts@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@appliedzkp/semaphore-contracts/-/semaphore-contracts-0.10.0.tgz#1ad3b3339f9ae60c996221d26fe27685e0b7b8e5"
+  integrity sha512-K8+twPYTFcUK464otdgLl6PY1VJylt+EblpHRW+nf4p6soTDzke4z7XwLmDgiV5Dl1MvFxl+m+8hofSntjY+Ug==
+  dependencies:
+    "@openzeppelin/contracts" "^4.4.2"
+    "@zk-kit/incremental-merkle-tree.sol" "^0.3.1"
+
 "@babel/runtime-corejs3@^7.10.2":
   version "7.17.2"
   resolved "https://registry.yarnpkg.com/@babel/runtime-corejs3/-/runtime-corejs3-7.17.2.tgz#fdca2cd05fba63388babe85d349b6801b008fd13"
