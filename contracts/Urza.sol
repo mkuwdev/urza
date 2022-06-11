@@ -12,38 +12,45 @@ contract Urza is SemaphoreCore, SemaphoreGroups, Ownable {
     string public name = "Urza";
 
     // EVENTS
+    event GroupCreated(
+        uint256 indexed groupId, 
+        address indexed groupManager, 
+        bytes32 contentId, 
+    );
 
+    event ContentAdded(
+        bytes32 indexed contentId, 
+        string contentUri
+    );
 
     // STRUCTS
     // type of a single group chat
     struct Group {
         address groupManager;
-        bytes32 groupId;
+        uint256 groupId;
         bytes32 contentId;
         uint allowance;
         uint messageCount;
+        bool active;
+        mapping(uint256 => uint256[]) groupIdentityCommitments;
+        mapping(uint256 => uint256[]) groupMessageList;
         // merkle of allowed members
     }
     // type of a single message in a group
     struct Message {
-        bytes32 messageId;
+        uint256 messageId;
         bytes32 contentId;
         uint256 likes;
         // .. add time here?
     }
 
     // MAPPINGS
-    mapping(bytes32 => uint256[]) public groupIdentityCommitments;
+    mapping(uint256 => Group) public groupRegistry;
     mapping(bytes32 => string) public contentRegistry;
-    mapping(bytes32 => Group) public groupRegistry;
-    mapping(bytes32 => bytes32[]) public groupQuestionList;
 
     // CONSTANTS
-    // groups can either be active accepting messages or be on pause
-    uint256 constant PAUSED = 1;
-    uint256 constant ACTIVE = 2;
     // minimum fee
-    uint256 fee = 10000000000000000000;
+    uint256 minimumFee = 10000000000000000000;
 
     // the external verifier used to verify Semaphore proofs.
     IVerifier public verifier;
@@ -56,5 +63,26 @@ contract Urza is SemaphoreCore, SemaphoreGroups, Ownable {
     
 
     // FUNCTIONS
+    function createGroup(uint256 _groupId, string calldata _contentUri) external payable {
+        require(
+            msg.value >= minimumFee, 
+            "Must be above the minimum fee!"
+        );
+
+        address _groupManager = msg.sender;
+        bytes32 _contentId = keccak256(abi.encode(_contentUri));
+
+        _createGroup(_groupId, 20, 0);
+
+        contentRegistry[_contentId] = _contentUri;
+        groupRegistry[_groupId].groupManager = _groupManager;
+        groupRegistry[_groupId].groupId = _groupId;
+        groupRegistry[_groupId].contentId = _contentId;
+        groupRegistry[_groupId].active = true;
+
+        emit ContentAdded(_contentId, _contentUri);
+        emit GroupCreated(_groupId, _groupManager, _contentId);
+    }
+
     
 }
