@@ -183,6 +183,8 @@ contract Urza is SemaphoreCore, SemaphoreGroups, Ownable {
             })
         );
 
+        groupRegistry[_groupId].messageCount += 1;
+
         emit ContentAdded(_contentId, _messageContentUri);
         emit MessageSent(_signal, _groupId, _contentId);
     }
