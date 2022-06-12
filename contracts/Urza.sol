@@ -26,6 +26,12 @@ contract Urza is SemaphoreCore, SemaphoreGroups, Ownable {
         string contentUri
     );
 
+    event GroupMemberStatusChange(
+        uint256 indexed groupId,
+        address whitelistedAddress,
+        bool indexed newState
+    );
+
     event GroupStatusChange(
         uint256 indexed groupId, 
         bool indexed newState
@@ -53,7 +59,7 @@ contract Urza is SemaphoreCore, SemaphoreGroups, Ownable {
         uint256[] identityCommitments;
         Message[] messageList;
         bool restricted;
-        // merkle of allowed members
+        mapping(address => bool) whitelist;
         // add allowance?
     }
     // type of a single message in a group
@@ -135,6 +141,22 @@ contract Urza is SemaphoreCore, SemaphoreGroups, Ownable {
 
         emit ContentAdded(_contentId, _contentUri);
         emit GroupCreated(_groupId, _groupManager, _contentId);
+    }
+
+    function addUser(
+        uint256 _groupId,
+        address _address
+    ) public groupValid(_groupId) onlyGroupManager(_groupId) {
+        groupRegistry[_groupId].whitelist[_address] = true;
+        emit GroupMemberStatusChange(_groupId, _address, true);
+    }
+
+    function removeUser(
+        uint256 _groupId,
+        address _address
+    ) public groupValid(_groupId) onlyGroupManager(_groupId) {
+        groupRegistry[_groupId].whitelist[_address] = false;
+        emit GroupMemberStatusChange(_groupId, _address, false);
     }
 
     function startGroup(
